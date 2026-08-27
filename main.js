@@ -50,7 +50,6 @@ const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshToon
 floor.rotation.x = -Math.PI / 2;
 floor.receiveShadow = true;
 scene.add(floor);
-
 const grid = new THREE.GridHelper(40, 20, 0x161218, 0x302a2d);
 grid.position.y = 0.01;
 scene.add(grid);
@@ -71,20 +70,15 @@ function flash(message, ms = 1200) {
   clearTimeout(flash.timer);
   flash.timer = setTimeout(() => status.classList.remove('show'), ms);
 }
-
 function disposeCharacter() {
   if (character) scene.remove(character);
-  outlines.splice(0).forEach((o) => {
-    o.parent?.remove(o);
-    o.material?.dispose?.();
-  });
+  outlines.splice(0).forEach((o) => { o.parent?.remove(o); o.material?.dispose?.(); });
   meshes.splice(0).forEach((mesh) => {
     const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
     mats.forEach((m) => m?.dispose?.());
   });
   character = null;
 }
-
 function cloneToonMaterial(original) {
   return new THREE.MeshToonMaterial({
     color: original?.color?.clone?.() || new THREE.Color(0xffffff),
@@ -96,7 +90,6 @@ function cloneToonMaterial(original) {
     gradientMap
   });
 }
-
 function buildOutline(mesh) {
   const material = new THREE.MeshBasicMaterial({ color: 0x08080a, side: THREE.BackSide });
   const outline = new THREE.Mesh(mesh.geometry, material);
@@ -108,14 +101,10 @@ function buildOutline(mesh) {
   mesh.parent.add(outline);
   outlines.push(outline);
 }
-
 function applyCelMode() {
   const enabled = document.querySelector('#cel').checked;
-  meshes.forEach((mesh) => {
-    mesh.material = enabled ? mesh.userData.toonMaterial : mesh.userData.originalMaterial;
-  });
+  meshes.forEach((mesh) => { mesh.material = enabled ? mesh.userData.toonMaterial : mesh.userData.originalMaterial; });
 }
-
 function rebuildToonMaterials() {
   meshes.forEach((mesh) => {
     mesh.userData.toonMaterial?.dispose?.();
@@ -123,7 +112,6 @@ function rebuildToonMaterials() {
   });
   applyCelMode();
 }
-
 function fitCharacter(root) {
   root.scale.setScalar(1);
   root.position.set(0, 0, 0);
@@ -142,7 +130,6 @@ function fitCharacter(root) {
   camera.position.copy(homePosition);
   controls.update();
 }
-
 function installCharacter(gltf, label) {
   disposeCharacter();
   character = gltf.scene;
@@ -159,13 +146,14 @@ function installCharacter(gltf, label) {
   fitCharacter(character);
   applyCelMode();
   modelName.textContent = label.toUpperCase();
-  flash(`${label} · ${meshes.length} MESH${meshes.length === 1 ? '' : 'ES'} · LOADED`);
+  flash(`${label} · ${meshes.length} MESH${meshes.length === 1 ? '' : 'ES'} · LOADED`, 2200);
 }
-
 function loadUrl(url, label) {
+  modelName.textContent = `LOADING ${label.toUpperCase()}...`;
   loader.load(url, (gltf) => installCharacter(gltf, label), undefined, (error) => {
     console.error(error);
-    flash('MODEL LOAD FAILED', 2400);
+    modelName.textContent = 'MODEL LOAD FAILED';
+    flash('MODEL LOAD FAILED', 3000);
   });
 }
 
@@ -178,7 +166,7 @@ modelFile.addEventListener('change', () => {
   loadUrl(sourceUrl, file.name);
 });
 
-loadUrl('./assets/runtime/characters/human_base_m_v1.glb', 'human_base_m_v1.glb');
+loadUrl('./character-creator/Basemodel.glb', 'Basemodel.glb');
 
 const cel = document.querySelector('#cel');
 cel.addEventListener('change', () => { applyCelMode(); flash(`CEL SHADING ${cel.checked ? 'ON' : 'OFF'}`); });
@@ -186,10 +174,7 @@ const outlineToggle = document.querySelector('#outline');
 outlineToggle.addEventListener('change', () => { outlines.forEach((o) => { o.visible = outlineToggle.checked; }); flash(`OUTLINE ${outlineToggle.checked ? 'ON' : 'OFF'}`); });
 const bands = document.querySelector('#bands');
 bands.addEventListener('change', () => {
-  gradientMap.dispose();
-  gradientMap = makeGradientMap(Number(bands.value));
-  rebuildToonMaterials();
-  flash(`${bands.value} SHADOW BANDS`);
+  gradientMap.dispose(); gradientMap = makeGradientMap(Number(bands.value)); rebuildToonMaterials(); flash(`${bands.value} SHADOW BANDS`);
 });
 const edge = document.querySelector('#edge');
 edge.addEventListener('input', () => { outlines.forEach((o) => o.scale.setScalar(Number(edge.value))); });
@@ -208,17 +193,11 @@ function getAutoRenderScale() {
   if (memory >= 8 && cores >= 12) return 1.25;
   return 1;
 }
-
 let renderScaleMode = localStorage.getItem('gg-render-scale') || 'auto';
 const renderScaleSelect = document.querySelector('#render-scale');
 renderScaleSelect.value = [...renderScaleSelect.options].some((o) => o.value === renderScaleMode) ? renderScaleMode : 'auto';
-renderScaleSelect.addEventListener('change', () => {
-  renderScaleMode = renderScaleSelect.value;
-  localStorage.setItem('gg-render-scale', renderScaleMode);
-  resize();
-});
+renderScaleSelect.addEventListener('change', () => { renderScaleMode = renderScaleSelect.value; localStorage.setItem('gg-render-scale', renderScaleMode); resize(); });
 function resolvedRenderScale() { return renderScaleMode === 'auto' ? getAutoRenderScale() : Number(renderScaleMode); }
-
 function chooseUIProfile(width, height) {
   const aspect = width / Math.max(height, 1);
   const touch = matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
@@ -236,20 +215,13 @@ function adaptUI(width, height) {
   app.dataset.inputMode = matchMedia('(pointer: coarse)').matches ? 'touch' : 'pointer';
   return profile;
 }
-
-function resetCamera() {
-  camera.position.copy(homePosition);
-  controls.target.copy(homeTarget);
-  controls.update();
-  flash('CAMERA RESET');
-}
+function resetCamera() { camera.position.copy(homePosition); controls.target.copy(homeTarget); controls.update(); flash('CAMERA RESET'); }
 app.addEventListener('keydown', (event) => {
   if (event.target.matches('input,select')) return;
   const k = event.key.toLowerCase();
   if (k === 'r') resetCamera();
   if (k === 'h') document.querySelectorAll('.panel,.jp-card,.logo,.version,.topbar').forEach((el) => { el.hidden = !el.hidden; });
 });
-
 function resize() {
   const width = Math.max(1, app.clientWidth);
   const height = Math.max(1, app.clientHeight);
@@ -264,9 +236,4 @@ function resize() {
 addEventListener('resize', resize);
 addEventListener('orientationchange', () => setTimeout(resize, 50));
 resize();
-
-(function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
-  renderer.render(scene, camera);
-})();
+(function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); })();
