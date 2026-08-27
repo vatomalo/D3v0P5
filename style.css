@@ -48,48 +48,23 @@ input[type='range'] { width: 120px; accent-color: var(--red); } select { backgro
 #app[data-ui-profile='tablet'] #controls { top: 470px; }
 #app[data-ui-profile='tablet'] .jp-card { right: 14px; width: 104px; min-height: 330px; font-size: 22px; padding: 16px 13px; }
 
-/* Mobile is a separate composition, not a scaled desktop HUD. */
-#app[data-ui-profile='phone-landscape'] { --hud-scale: 1; --hud-gap: 8px; }
-#app[data-ui-profile='phone-landscape'] .topbar { height: 30px; padding: 0 9px; font-size: 12px; }
-#app[data-ui-profile='phone-landscape'] .jp-card,
+/* Phones keep the original floating-panel composition, just scaled to fit. */
+#app[data-ui-profile='phone-landscape'] { --hud-scale: .62; --hud-gap: 8px; }
+#app[data-ui-profile='phone-landscape'] .topbar { height: 30px; font-size: 14px; }
+#app[data-ui-profile='phone-landscape'] #settings { top: 52px; }
 #app[data-ui-profile='phone-landscape'] #controls,
-#app[data-ui-profile='phone-landscape'] .version { display: none; }
-#app[data-ui-profile='phone-landscape'] .logo { left: 50%; top: 38px; transform: translateX(-50%) scale(.42) rotate(-3deg); transform-origin: top center; }
-#app[data-ui-profile='phone-landscape'] #settings { left: 8px; top: 48px; width: 260px; max-height: calc(100vh - 58px - env(safe-area-inset-bottom)); overflow-y: auto; padding: 28px 13px 12px; transform: none; }
-#app[data-ui-profile='phone-landscape'] #settings .panel-title { font-size: 18px; }
-#app[data-ui-profile='phone-landscape'] #settings .row { margin: 6px 0; font-size: 14px; }
-#app[data-ui-profile='phone-landscape'] #settings input[type='range'] { width: 92px; }
-#app[data-ui-profile='phone-landscape'] #settings .load-model { font-size: 16px; padding: 7px 9px; }
+#app[data-ui-profile='phone-landscape'] .jp-card,
+#app[data-ui-profile='phone-landscape'] .version { display:none; }
+#app[data-ui-profile='phone-landscape'] .logo { top:42px; }
 
-#app[data-ui-profile='phone-portrait'] { --hud-scale: 1; --hud-gap: 8px; }
-#app[data-ui-profile='phone-portrait'] .topbar { height: 38px; padding: 0 10px; font-size: 12px; letter-spacing: .2px; }
-#app[data-ui-profile='phone-portrait'] .jp-card,
+#app[data-ui-profile='phone-portrait'] { --hud-scale: .68; --hud-gap: 8px; }
+#app[data-ui-profile='phone-portrait'] .topbar { height:34px; font-size:13px; padding: 0 10px; }
+#app[data-ui-profile='phone-portrait'] #settings { left: 8px; top: 58px; bottom: auto; width: 310px; max-height: none; overflow: visible; transform: scale(var(--hud-scale)) skew(-1deg); transform-origin: top left; }
 #app[data-ui-profile='phone-portrait'] #controls,
-#app[data-ui-profile='phone-portrait'] .version { display: none; }
-#app[data-ui-profile='phone-portrait'] .logo { left: 50%; top: 49px; transform: translateX(-50%) scale(.38) rotate(-3deg); transform-origin: top center; }
-#app[data-ui-profile='phone-portrait'] .logo-main { font-size: 40px; }
-#app[data-ui-profile='phone-portrait'] .logo-main b { margin-left: 100px; }
-#app[data-ui-profile='phone-portrait'] .logo-sub { margin-left: 108px; font-size: 12px; }
-#app[data-ui-profile='phone-portrait'] #settings {
-  left: 8px;
-  right: 8px;
-  top: auto;
-  bottom: calc(8px + env(safe-area-inset-bottom));
-  width: auto;
-  max-height: 41vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 29px 14px 13px;
-  transform: none;
-  border-width: 2px;
-  box-shadow: 4px 4px 0 rgba(0,0,0,.28);
-}
-#app[data-ui-profile='phone-portrait'] #settings .panel-title { top: -19px; font-size: 18px; padding: 5px 11px 6px; }
-#app[data-ui-profile='phone-portrait'] #settings .load-model { margin-top: 0; padding: 7px 9px; font-size: 16px; }
-#app[data-ui-profile='phone-portrait'] #settings .model-name { margin: 5px 0 7px; font-size: 10px; }
-#app[data-ui-profile='phone-portrait'] #settings .row { margin: 5px 0; font-size: 14px; gap: 8px; }
-#app[data-ui-profile='phone-portrait'] #settings input[type='range'] { width: min(34vw, 135px); }
-#app[data-ui-profile='phone-portrait'] #settings select { font-size: 14px; padding: 2px 4px; }
-#app[data-ui-profile='phone-portrait'] #settings .switch { width: 38px; height: 21px; }
-#app[data-ui-profile='phone-portrait'] #settings .switch:checked::before { left: 18px; }
-#app[data-ui-profile='phone-portrait'] #status { bottom: calc(43vh + env(safe-area-inset-bottom)); max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+#app[data-ui-profile='phone-portrait'] .jp-card,
+#app[data-ui-profile='phone-portrait'] .version { display:none; }
+#app[data-ui-profile='phone-portrait'] .logo { left:50%; top:46px; bottom:auto; transform: translateX(-50%) scale(var(--hud-scale)) rotate(-4deg); transform-origin: top center; }
+#app[data-ui-profile='phone-portrait'] .logo-main { font-size:32px; }
+#app[data-ui-profile='phone-portrait'] .logo-main b { margin-left:72px; }
+#app[data-ui-profile='phone-portrait'] .logo-sub { margin-left:80px; font-size:11px; }
+#app[data-ui-profile='phone-portrait'] #status { bottom: 14px; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
