@@ -6,14 +6,13 @@ const app = document.querySelector('#app');
 const canvas = document.querySelector('#game');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight, false);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const scene = new THREE.Scene();
 scene.fog = new THREE.FogExp2(0xf1c0c7, 0.018);
-const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100);
+const camera = new THREE.PerspectiveCamera(45, 16 / 9, 0.1, 100);
 const homePosition = new THREE.Vector3(5.8, 3.4, 7.2);
 const homeTarget = new THREE.Vector3(0, 1.25, 0);
 camera.position.copy(homePosition);
@@ -50,7 +49,7 @@ loader.load('./assets/runtime/characters/human_base_m_v1.glb',(gltf)=>{
   document.querySelector('#status').textContent='BASE BODY v1 · LOADED';
 },undefined,(err)=>{console.error('Base model missing:',err);document.querySelector('#status').textContent='DROP human_base_m_v1.glb INTO assets/runtime/characters/';});
 
-const cel=document.querySelector('#cel');if(cel)cel.addEventListener('change',e=>{if(!character)return;character.traverse(o=>{if(o.isMesh&&!o.userData.source){if(e.target.checked){const old=o.material;o.material=new THREE.MeshToonMaterial({map:old.map||null,color:old.color||0xffffff,gradientMap});} }});});
+const cel=document.querySelector('#cel');if(cel)cel.addEventListener('change',e=>{if(!character)return;character.traverse(o=>{if(o.isMesh&&!o.userData.source){if(e.target.checked){const old=o.material;o.material=new THREE.MeshToonMaterial({map:old.map||null,color:old.color||0xffffff,gradientMap});}}});});
 const outline=document.querySelector('#outline');if(outline)outline.addEventListener('change',e=>outlines.forEach(o=>o.visible=e.target.checked));
 const edge=document.querySelector('#edge');if(edge)edge.addEventListener('input',e=>outlines.forEach(o=>o.scale.setScalar(Number(e.target.value))));
 const key=document.querySelector('#key');if(key)key.addEventListener('input',e=>keyLight.intensity=Number(e.target.value));
@@ -59,5 +58,20 @@ const rim=document.querySelector('#rim');if(rim)rim.addEventListener('change',e=
 
 function resetCamera(){camera.position.copy(homePosition);controls.target.copy(homeTarget);controls.update()}
 app.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='r')resetCamera();if(e.key.toLowerCase()==='h')document.querySelectorAll('.panel,.jp-card,.logo,.version,.topbar').forEach(x=>x.hidden=!x.hidden)});app.focus();
-addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight,false);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix()});
+
+function resize(){
+  const width = Math.max(1, app.clientWidth);
+  const height = Math.max(1, app.clientHeight);
+  renderer.setSize(width, height, false);
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+
+  const referenceWidth = 1920;
+  const referenceHeight = 1080;
+  const scale = Math.min(width / referenceWidth, height / referenceHeight);
+  document.documentElement.style.setProperty('--ui-scale', String(scale));
+}
+
+addEventListener('resize', resize);
+resize();
 (function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)})();
