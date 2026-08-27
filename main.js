@@ -1,6 +1,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/loaders/GLTFLoader.js';
+import { DecalSystem } from './decals.js';
 
 const app = document.querySelector('#app');
 const canvas = document.querySelector('#game');
@@ -72,6 +73,24 @@ function flash(message, ms = 1200) {
   clearTimeout(flash.timer);
   flash.timer = setTimeout(() => status.classList.remove('show'), ms);
 }
+
+const decalSystem = new DecalSystem({
+  panel: document.querySelector('#decals'),
+  featureSelect: document.querySelector('#decal-feature'),
+  childSelect: document.querySelector('#decal-child'),
+  controls: {
+    visible: document.querySelector('#decal-visible'),
+    x: document.querySelector('#decal-x'),
+    y: document.querySelector('#decal-y'),
+    scaleX: document.querySelector('#decal-scale-x'),
+    scaleY: document.querySelector('#decal-scale-y'),
+    rotation: document.querySelector('#decal-rotation'),
+    variant: document.querySelector('#decal-variant')
+  },
+  flash
+});
+window.ggDecals = decalSystem;
+
 function disposeCharacter() {
   if (character) scene.remove(character);
   outlines.splice(0).forEach((o) => { o.parent?.remove(o); o.material?.dispose?.(); });
@@ -105,7 +124,7 @@ function fitCharacter(root) {
 function installCharacter(gltf, label) {
   disposeCharacter(); character = gltf.scene; scene.add(character);
   character.traverse((object) => { if (!object.isMesh) return; object.castShadow = true; object.receiveShadow = true; object.userData.originalMaterial = object.material; object.userData.toonMaterial = cloneToonMaterial(object.material); meshes.push(object); });
-  meshes.forEach(buildOutline); fitCharacter(character); applyCelMode(); modelName.textContent = label.toUpperCase(); flash(`${label} · ${meshes.length} MESH${meshes.length === 1 ? '' : 'ES'} · LOADED`, 2200);
+  meshes.forEach(buildOutline); fitCharacter(character); applyCelMode(); decalSystem.attach(character); modelName.textContent = label.toUpperCase(); flash(`${label} · ${meshes.length} MESH${meshes.length === 1 ? '' : 'ES'} · LOADED`, 2200);
 }
 function loadUrl(url, label) { modelName.textContent = `LOADING ${label.toUpperCase()}...`; loader.load(url, (gltf) => installCharacter(gltf, label), undefined, (error) => { console.error(error); modelName.textContent = 'MODEL LOAD FAILED'; flash('MODEL LOAD FAILED', 3000); }); }
 
