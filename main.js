@@ -1,6 +1,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/loaders/GLTFLoader.js';
+import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 import { DecalSystem } from './decals.js';
 
 const app = document.querySelector('#app');
@@ -9,6 +10,8 @@ const status = document.querySelector('#status');
 const modelName = document.querySelector('#model-name');
 const settings = document.querySelector('#settings');
 const settingsToggle = document.querySelector('#settings-toggle');
+const smoothToggle = document.querySelector('#smooth-model');
+const smoothingSlider = document.querySelector('#smoothing');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(1);
 renderer.shadowMap.enabled = true;
@@ -95,6 +98,7 @@ function disposeCharacter() {
   if (character) scene.remove(character);
   outlines.splice(0).forEach((o) => { o.parent?.remove(o); o.material?.dispose?.(); });
   meshes.splice(0).forEach((mesh) => {
+    mesh.userData.smoothGeometry?.dispose?.();
     const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
     mats.forEach((m) => m?.dispose?.());
   });
@@ -113,6 +117,25 @@ function buildOutline(mesh) {
 }
 function applyCelMode() { const enabled = document.querySelector('#cel').checked; meshes.forEach((mesh) => { mesh.material = enabled ? mesh.userData.toonMaterial : mesh.userData.originalMaterial; }); }
 function rebuildToonMaterials() { meshes.forEach((mesh) => { mesh.userData.toonMaterial?.dispose?.(); mesh.userData.toonMaterial = cloneToonMaterial(mesh.userData.originalMaterial); }); applyCelMode(); }
+
+function buildSmoothGeometry(mesh, degrees) {
+  mesh.userData.smoothGeometry?.dispose?.();
+  const radians = THREE.MathUtils.degToRad(Number(degrees));
+  mesh.userData.smoothGeometry = toCreasedNormals(mesh.userData.originalGeometry, radians);
+}
+function applyModelSmoothing(rebuild = false) {
+  const enabled = smoothToggle.checked;
+  const degrees = Number(smoothingSlider.value);
+  smoothingSlider.disabled = !enabled;
+  meshes.forEach((mesh) => {
+    if (enabled && (rebuild || !mesh.userData.smoothGeometry || mesh.userData.smoothingDegrees !== degrees)) {
+      buildSmoothGeometry(mesh, degrees);
+      mesh.userData.smoothingDegrees = degrees;
+    }
+    mesh.geometry = enabled ? mesh.userData.smoothGeometry : mesh.userData.originalGeometry;
+  });
+}
+
 function fitCharacter(root) {
   root.scale.setScalar(1); root.position.set(0, 0, 0);
   const box = new THREE.Box3().setFromObject(root); const size = box.getSize(new THREE.Vector3()); const targetHeight = 3.8;
@@ -123,8 +146,19 @@ function fitCharacter(root) {
 }
 function installCharacter(gltf, label) {
   disposeCharacter(); character = gltf.scene; scene.add(character);
-  character.traverse((object) => { if (!object.isMesh) return; object.castShadow = true; object.receiveShadow = true; object.userData.originalMaterial = object.material; object.userData.toonMaterial = cloneToonMaterial(object.material); meshes.push(object); });
-  meshes.forEach(buildOutline); fitCharacter(character); applyCelMode(); decalSystem.attach(character); modelName.textContent = label.toUpperCase(); flash(`${label} · ${meshes.length} MESH${meshes.length === 1 ? '' : 'ES'} · LOADED`, 2200);
+  character.traverse((object) => {
+    if (!object.isMesh) return;
+    object.castShadow = true; object.receiveShadow = true;
+    object.userData.originalGeometry = object.geometry;
+    object.userData.originalMaterial = object.material;
+    object.userData.toonMaterial = cloneToonMaterial(object.material);
+    meshes.push(object);
+  });
+  applyModelSmoothing(true);
+  meshes.forEach(buildOutline);
+  fitCharacter(character); applyCelMode(); decalSystem.attach(character);
+  modelName.textContent = label.toUpperCase();
+  flash(`${label} · ${meshes.length} MESH${meshes.length === 1 ? '' : 'ES'} · LOADED`, 2200);
 }
 function loadUrl(url, label) { modelName.textContent = `LOADING ${label.toUpperCase()}...`; loader.load(url, (gltf) => installCharacter(gltf, label), undefined, (error) => { console.error(error); modelName.textContent = 'MODEL LOAD FAILED'; flash('MODEL LOAD FAILED', 3000); }); }
 
@@ -137,6 +171,19 @@ settingsToggle.addEventListener('click', () => {
   settingsToggle.setAttribute('aria-expanded', String(!collapsed));
   settingsToggle.querySelector('.toggle-mark').textContent = collapsed ? '▶' : '◀';
   flash(collapsed ? 'CHARACTER VIEW HIDDEN' : 'CHARACTER VIEW OPEN');
+});
+
+smoothToggle.addEventListener('change', () => {
+  applyModelSmoothing(false);
+  flash(`MODEL SMOOTHING ${smoothToggle.checked ? 'ON' : 'OFF'}`);
+});
+let smoothingTimer;
+smoothingSlider.addEventListener('input', () => {
+  clearTimeout(smoothingTimer);
+  smoothingTimer = setTimeout(() => {
+    applyModelSmoothing(true);
+    flash(`SMOOTHING ${smoothingSlider.value}°`);
+  }, 60);
 });
 
 const cel = document.querySelector('#cel'); cel.addEventListener('change', () => { applyCelMode(); flash(`CEL SHADING ${cel.checked ? 'ON' : 'OFF'}`); });
