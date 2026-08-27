@@ -4,8 +4,9 @@ import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/
 
 const app = document.querySelector('#app');
 const canvas = document.querySelector('#game');
+const status = document.querySelector('#status');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(1);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -46,8 +47,8 @@ function addOutline(mesh){const o=new THREE.Mesh(mesh.geometry,outlineMaterial);
 const loader=new GLTFLoader();
 loader.load('./assets/runtime/characters/human_base_m_v1.glb',(gltf)=>{
   character=gltf.scene;character.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;addOutline(o)}});scene.add(character);fitCharacter(character);
-  document.querySelector('#status').textContent='BASE BODY v1 · LOADED';
-},undefined,(err)=>{console.error('Base model missing:',err);document.querySelector('#status').textContent='DROP human_base_m_v1.glb INTO assets/runtime/characters/';});
+  status.textContent='BASE BODY v1 · LOADED';
+},undefined,(err)=>{console.error('Base model missing:',err);status.textContent='DROP human_base_m_v1.glb INTO assets/runtime/characters/';});
 
 const cel=document.querySelector('#cel');if(cel)cel.addEventListener('change',e=>{if(!character)return;character.traverse(o=>{if(o.isMesh&&!o.userData.source){if(e.target.checked){const old=o.material;o.material=new THREE.MeshToonMaterial({map:old.map||null,color:old.color||0xffffff,gradientMap});}}});});
 const outline=document.querySelector('#outline');if(outline)outline.addEventListener('change',e=>outlines.forEach(o=>o.visible=e.target.checked));
@@ -56,13 +57,42 @@ const key=document.querySelector('#key');if(key)key.addEventListener('input',e=>
 const ambient=document.querySelector('#ambient');if(ambient)ambient.addEventListener('input',e=>ambientLight.intensity=Number(e.target.value));
 const rim=document.querySelector('#rim');if(rim)rim.addEventListener('change',e=>rimLight.visible=e.target.checked);
 
+function getAutoRenderScale(){
+  const memory = navigator.deviceMemory || 4;
+  const cores = navigator.hardwareConcurrency || 4;
+  if (memory <= 2 || cores <= 4) return 0.5;
+  if (memory <= 4 || cores <= 6) return 0.75;
+  if (memory >= 8 && cores >= 12) return 1.25;
+  return 1;
+}
+
+let renderScaleMode = localStorage.getItem('gg-render-scale') || 'auto';
+const renderScaleSelect = document.querySelector('#render-scale');
+if (renderScaleSelect) {
+  renderScaleSelect.value = [...renderScaleSelect.options].some(o=>o.value===renderScaleMode) ? renderScaleMode : 'auto';
+  renderScaleSelect.addEventListener('change',e=>{
+    renderScaleMode=e.target.value;
+    localStorage.setItem('gg-render-scale',renderScaleMode);
+    resize();
+  });
+}
+
+function resolvedRenderScale(){return renderScaleMode==='auto'?getAutoRenderScale():Number(renderScaleMode)}
+
 function resetCamera(){camera.position.copy(homePosition);controls.target.copy(homeTarget);controls.update()}
 app.addEventListener('keydown',e=>{if(e.key.toLowerCase()==='r')resetCamera();if(e.key.toLowerCase()==='h')document.querySelectorAll('.panel,.jp-card,.logo,.version,.topbar').forEach(x=>x.hidden=!x.hidden)});app.focus();
 
 function resize(){
   const width = Math.max(1, app.clientWidth);
   const height = Math.max(1, app.clientHeight);
-  renderer.setSize(width, height, false);
+  const renderScale = resolvedRenderScale();
+  const internalWidth = Math.max(1, Math.round(width * renderScale));
+  const internalHeight = Math.max(1, Math.round(height * renderScale));
+
+  renderer.setSize(internalWidth, internalHeight, false);
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 
@@ -70,6 +100,11 @@ function resize(){
   const referenceHeight = 1080;
   const scale = Math.min(width / referenceWidth, height / referenceHeight);
   document.documentElement.style.setProperty('--ui-scale', String(scale));
+
+  status.textContent = `${renderScaleMode==='auto'?'AUTO ':''}${Math.round(renderScale*100)}% · ${internalWidth}×${internalHeight} → ${width}×${height}`;
+  status.classList.add('show');
+  clearTimeout(resize.statusTimer);
+  resize.statusTimer=setTimeout(()=>status.classList.remove('show'),1200);
 }
 
 addEventListener('resize', resize);
