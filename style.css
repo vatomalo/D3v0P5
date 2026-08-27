@@ -28,6 +28,7 @@ body { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; c
 #settings .panel-body { opacity: 1; transition: opacity .12s ease; }
 #settings.collapsed .panel-body { opacity: 0; pointer-events: none; }
 #controls { top: 535px; padding-top: 32px; }
+#decals { left: auto; right: 190px; top: 92px; width: 300px; transform-origin: top right; }
 .panel-title { position: absolute; left: -2px; top: -22px; padding: 7px 15px 8px; background: var(--red); color: #070707; border: 2px solid #111; font-size: 22px; font-style: italic; transform: skew(-8deg) rotate(-1deg); text-transform: uppercase; white-space: nowrap; }
 .panel-toggle { font-family: inherit; cursor: pointer; }
 .panel-toggle .toggle-mark { display: inline-block; margin-left: 7px; font-size: .72em; }
@@ -39,6 +40,10 @@ input[type='range'] { width: 120px; accent-color: var(--red); } select { backgro
 .load-model:hover { filter: brightness(1.08); }
 .model-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 7px 0 12px; font: 700 11px/1.2 Arial,sans-serif; letter-spacing: .6px; color: #ddd; }
 .control-line { display: grid; grid-template-columns: 110px 12px 1fr; gap: 6px; margin: 7px 0; font-size: 16px; font-style: italic; letter-spacing: 1px; }
+.decal-path { display: grid; grid-template-columns: 1fr auto 1fr; gap: 7px; align-items: center; margin: 5px 0 14px; }
+.decal-path select { width: 100%; max-width: none; }
+.decal-path span { color: var(--red); font: 900 22px/1 Arial,sans-serif; }
+.decal-note { margin-top: 12px; padding-top: 8px; border-top: 1px solid #555; color: #bbb; font: 700 10px/1 Arial,sans-serif; letter-spacing: 1.4px; text-align: right; }
 .jp-card { position: absolute; right: calc(4.3% + env(safe-area-inset-right)); top: 8%; width: 132px; min-height: 390px; padding: 22px 20px; background: #fff; color: #111; border: 4px solid #111; box-shadow: 7px 6px 0 rgba(0,0,0,.45); writing-mode: vertical-rl; text-orientation: upright; font-family: 'Noto Sans JP','Yu Gothic',sans-serif; font-weight: 900; font-size: 27px; letter-spacing: 3px; transform: scale(var(--hud-scale)); transform-origin: top right; }
 .logo { position: absolute; left: 50%; top: 62px; bottom: auto; transform: translateX(-50%) scale(var(--hud-scale)) rotate(-4deg); transform-origin: top center; }
 .logo-main { display: inline-block; background: #080808; color: white; border: 4px solid white; outline: 3px solid black; padding: 8px 18px 11px; font-size: clamp(28px,4vw,55px); line-height: .9; letter-spacing: 1px; font-style: italic; }.logo-main b { display: block; margin-left: 125px; margin-top: -4px; background: var(--red); padding: 6px 12px 8px; border: 3px solid white; outline: 3px solid black; }
@@ -51,12 +56,14 @@ input[type='range'] { width: 120px; accent-color: var(--red); } select { backgro
 #app[data-ui-profile='tablet'] { --hud-scale: .75; --hud-gap: 10px; }
 #app[data-ui-profile='tablet'] #controls { top: 470px; }
 #app[data-ui-profile='tablet'] .jp-card { right: 14px; width: 104px; min-height: 330px; font-size: 22px; padding: 16px 13px; }
+#app[data-ui-profile='tablet'] #decals { right: 125px; }
+#app[data-ui-profile='compact'] #decals { right: 145px; }
 
 #app[data-ui-profile='phone-landscape'] { --hud-scale: .62; --hud-gap: 8px; }
 #app[data-ui-profile='phone-landscape'] .topbar { height: 30px; font-size: 14px; }
 #app[data-ui-profile='phone-landscape'] #settings { top: 52px; }
 #app[data-ui-profile='phone-landscape'] #settings.collapsed { transform: translateX(-286px) scale(var(--hud-scale)) skew(-1deg); }
-#app[data-ui-profile='phone-landscape'] #controls,#app[data-ui-profile='phone-landscape'] .jp-card,#app[data-ui-profile='phone-landscape'] .version { display:none; }
+#app[data-ui-profile='phone-landscape'] #controls,#app[data-ui-profile='phone-landscape'] .jp-card,#app[data-ui-profile='phone-landscape'] .version,#app[data-ui-profile='phone-landscape'] #decals { display:none; }
 #app[data-ui-profile='phone-landscape'] .logo { top:42px; }
 
 #app[data-ui-profile='phone-portrait'] { --hud-scale: .68; --hud-gap: 8px; }
@@ -64,7 +71,7 @@ input[type='range'] { width: 120px; accent-color: var(--red); } select { backgro
 #app[data-ui-profile='phone-portrait'] #settings { left: 8px; top: 58px; bottom: auto; width: 310px; max-height: none; overflow: visible; transform: scale(var(--hud-scale)) skew(-1deg); transform-origin: top left; }
 #app[data-ui-profile='phone-portrait'] #settings.collapsed { transform: translateX(-286px) scale(var(--hud-scale)) skew(-1deg); }
 #app[data-ui-profile='phone-portrait'] #settings.collapsed .panel-title { left: 286px; }
-#app[data-ui-profile='phone-portrait'] #controls,#app[data-ui-profile='phone-portrait'] .jp-card,#app[data-ui-profile='phone-portrait'] .version { display:none; }
+#app[data-ui-profile='phone-portrait'] #controls,#app[data-ui-profile='phone-portrait'] .jp-card,#app[data-ui-profile='phone-portrait'] .version,#app[data-ui-profile='phone-portrait'] #decals { display:none; }
 #app[data-ui-profile='phone-portrait'] .logo { left:50%; top:46px; bottom:auto; transform: translateX(-50%) scale(var(--hud-scale)) rotate(-4deg); transform-origin: top center; }
 #app[data-ui-profile='phone-portrait'] .logo-main { font-size:32px; }
 #app[data-ui-profile='phone-portrait'] .logo-main b { margin-left:72px; }
