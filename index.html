@@ -3,17 +3,53 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Garden Gaiden Visual Prototype</title>
+  <title>Garden Gaiden Engine - Visual Prototype</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <main id="app">
-    <div id="hud">
-      <div class="kicker">GARDEN GAIDEN // VISUAL TEST 001</div>
-      <h1>CEL SHADE LAB</h1>
-      <p>Drag to orbit · wheel/pinch to zoom</p>
-    </div>
+  <main id="app" tabindex="0" aria-label="Garden Gaiden visual prototype">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+
     <canvas id="game"></canvas>
+
+    <div class="ink tl"></div>
+    <div class="ink tr"></div>
+    <div class="ink bl"></div>
+    <div class="ink br"></div>
+
+    <header class="topbar">GARDEN GAIDEN ENGINE - VISUAL PROTOTYPE</header>
+
+    <section id="settings" class="panel">
+      <div class="panel-title">VISUAL SETTINGS</div>
+      <label class="row"><span>CEL SHADING</span><input id="cel" class="switch" type="checkbox" checked></label>
+      <label class="row"><span>OUTLINE</span><input id="outline" class="switch" type="checkbox" checked></label>
+      <label class="row"><span>SHADOW BANDS</span><select id="bands"><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+      <label class="row"><span>EDGE THICKNESS</span><input id="edge" type="range" min="1.01" max="1.12" step="0.005" value="1.045"></label>
+      <label class="row"><span>LIGHT INTENSITY</span><input id="key" type="range" min="0" max="5" step="0.1" value="2.5"></label>
+      <label class="row"><span>AMBIENT LIGHT</span><input id="ambient" type="range" min="0" max="4" step="0.1" value="1.8"></label>
+      <label class="row"><span>RIM LIGHT</span><input id="rim" class="switch" type="checkbox" checked></label>
+    </section>
+
+    <section id="controls" class="panel">
+      <div class="panel-title">CONTROLS</div>
+      <div class="control-line"><span>LEFT MOUSE</span><span>:</span><span>ROTATE</span></div>
+      <div class="control-line"><span>RIGHT MOUSE</span><span>:</span><span>PAN</span></div>
+      <div class="control-line"><span>SCROLL</span><span>:</span><span>ZOOM</span></div>
+      <div class="control-line"><span>R</span><span>:</span><span>RESET CAMERA</span></div>
+      <div class="control-line"><span>H</span><span>:</span><span>TOGGLE UI</span></div>
+    </section>
+
+    <aside class="jp-card">すべてはここから始まる。</aside>
+
+    <div class="logo" aria-label="Garden Gaiden logo">
+      <div class="logo-main">GARDEN <b>GAIDEN</b></div>
+      <div class="logo-sub">ガーデン外伝</div>
+    </div>
+
+    <div class="version">EARLY PROTOTYPE<strong>0.0.1</strong></div>
+    <div id="status">camera reset</div>
   </main>
   <script type="module" src="./main.js"></script>
 </body>
