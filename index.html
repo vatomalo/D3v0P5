@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Garden Gaiden Engine - Character Lab</title>
-  <link rel="stylesheet" href="./style.css?v=20260828-0215" />
+  <link rel="stylesheet" href="./style.css?v=20260828-0204" />
   <script type="importmap">
   {
     "imports": {
@@ -31,7 +31,7 @@
           <label class="row"><span>CEL SHADING</span><input id="cel" class="switch" type="checkbox" checked></label>
           <label class="row"><span>OUTLINE</span><input id="outline" class="switch" type="checkbox" checked></label>
           <label class="row"><span>SMOOTH MODEL</span><input id="smooth-model" class="switch" type="checkbox" checked></label>
-          <label class="row"><span>SMOOTHING</span><input id="smoothing" type="range" min="15" max="180" step="5" value="120" title="Normal smoothing crease angle"></label>
+          <label class="row"><span>SMOOTHING</span><input id="smoothing" type="range" min="15" max="180" step="5" value="120"></label>
           <label class="row"><span>RENDER SCALE</span><select id="render-scale"><option value="auto" selected>AUTO</option><option value="0.5">50%</option><option value="0.67">67%</option><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option></select></label>
           <label class="row"><span>SHADOW BANDS</span><select id="bands"><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
           <label class="row"><span>EDGE THICKNESS</span><input id="edge" type="range" min="1.002" max="1.08" step="0.002" value="1.018"></label>
@@ -45,10 +45,10 @@
         <div class="panel-title">DECALS</div>
         <div class="decal-path"><select id="decal-feature"><option value="eyes">EYES</option><option value="nose">NOSE</option><option value="mouth">MOUTH</option></select><span>›</span><select id="decal-child"></select></div>
         <label class="row"><span>VISIBLE</span><input id="decal-visible" class="switch" type="checkbox" checked></label>
-        <label class="row"><span>X</span><input id="decal-x" type="range" min="-0.5" max="0.5" step="0.005" value="0"></label>
-        <label class="row"><span>Y</span><input id="decal-y" type="range" min="-0.5" max="0.5" step="0.005" value="0"></label>
-        <label class="row"><span>WIDTH</span><input id="decal-scale-x" type="range" min="0.02" max="0.35" step="0.005" value="0.1"></label>
-        <label class="row"><span>HEIGHT</span><input id="decal-scale-y" type="range" min="0.02" max="0.25" step="0.005" value="0.05"></label>
+        <label class="row"><span>X</span><input id="decal-x" type="range" min="-0.3" max="0.3" step="0.0025" value="0"></label>
+        <label class="row"><span>Y</span><input id="decal-y" type="range" min="-0.3" max="0.3" step="0.0025" value="0"></label>
+        <label class="row"><span>WIDTH</span><input id="decal-scale-x" type="range" min="0.005" max="0.12" step="0.0025" value="0.05"></label>
+        <label class="row"><span>HEIGHT</span><input id="decal-scale-y" type="range" min="0.005" max="0.08" step="0.0025" value="0.025"></label>
         <label class="row"><span>ROTATION</span><input id="decal-rotation" type="range" min="-45" max="45" step="1" value="0"></label>
         <label class="row"><span>VARIANT</span><select id="decal-variant"><option value="anime-01">ANIME 01</option><option value="line-01">LINE 01</option><option value="neutral-01">NEUTRAL 01</option></select></label>
         <div class="decal-note">FEATURE → SUB-DECAL</div>
@@ -69,6 +69,6 @@
       <div id="status">LOAD A GLB TO BEGIN</div>
     </div>
   </main>
-  <script type="module" src="./main.js?v=20260828-0215"></script>
+  <script type="module" src="./main.js?v=20260828-0204"></script>
 </body>
 </html>
