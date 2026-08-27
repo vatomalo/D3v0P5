@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Garden Gaiden Character Creator</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main id="creator">
+    <section id="stage-wrap">
+      <canvas id="stage"></canvas>
+      <div class="brand">GARDEN GAIDEN // CHARACTER CREATOR 0.1</div>
+    </section>
+
+    <aside id="panel">
+      <h1>CHARACTER CREATOR</h1>
+      <p class="sub">Cel-shaded mannequin prototype</p>
+
+      <label>Height <input id="height" type="range" min="0.85" max="1.25" step="0.01" value="1" /></label>
+      <label>Shoulders <input id="shoulders" type="range" min="0.75" max="1.35" step="0.01" value="1" /></label>
+      <label>Waist <input id="waist" type="range" min="0.72" max="1.25" step="0.01" value="0.92" /></label>
+      <label>Head <input id="head" type="range" min="0.85" max="1.2" step="0.01" value="1" /></label>
+      <label>Hair volume <input id="hair" type="range" min="0.7" max="1.4" step="0.01" value="1.05" /></label>
+
+      <label>Skin
+        <select id="skin">
+          <option value="#d59a72">Warm tan</option>
+          <option value="#efc7a4">Light warm</option>
+          <option value="#9a654a">Deep tan</option>
+          <option value="#6f4635">Deep brown</option>
+        </select>
+      </label>
+
+      <label>Hair
+        <select id="hairColor">
+          <option value="#111116">Ink black</option>
+          <option value="#2b1e24">Dark brown</option>
+          <option value="#6d315b">Aubergine</option>
+          <option value="#d9d9e2">Silver</option>
+        </select>
+      </label>
+
+      <label>Top
+        <select id="shirtColor">
+          <option value="#1d1d26">Black</option>
+          <option value="#8f2038">Crimson</option>
+          <option value="#2b3f74">Indigo</option>
+          <option value="#efe2c7">Cream</option>
+        </select>
+      </label>
+
+      <div class="actions">
+        <button id="reset" type="button">RESET</button>
+        <button id="blit" type="button">BLIT PORTRAIT</button>
+      </div>
+
+      <section class="portrait-card">
+        <div class="portrait-label">VN PORTRAIT BUFFER</div>
+        <canvas id="portrait" width="512" height="512"></canvas>
+      </section>
+
+      <p class="help">Drag to orbit · wheel/pinch to zoom</p>
+    </aside>
+  </main>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
