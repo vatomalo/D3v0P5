@@ -4,27 +4,25 @@ const FEATURE_DEFS = {
   eyes: {
     label: 'EYES',
     children: {
-      left:  { label: 'LEFT',  x: -0.12, y: 0.075, scaleX: 0.11, scaleY: 0.055, rotation: 0, visible: true, variant: 'anime-01' },
-      right: { label: 'RIGHT', x:  0.12, y: 0.075, scaleX: 0.11, scaleY: 0.055, rotation: 0, visible: true, variant: 'anime-01' }
+      left:  { label: 'LEFT',  x: -0.12, y: 0.075, scaleX: 0.052, scaleY: 0.022, rotation: 0, visible: true, variant: 'anime-01' },
+      right: { label: 'RIGHT', x:  0.12, y: 0.075, scaleX: 0.052, scaleY: 0.022, rotation: 0, visible: true, variant: 'anime-01' }
     }
   },
   nose: {
     label: 'NOSE',
     children: {
-      main: { label: 'MAIN', x: 0, y: -0.01, scaleX: 0.05, scaleY: 0.07, rotation: 0, visible: true, variant: 'line-01' }
+      main: { label: 'MAIN', x: 0, y: -0.01, scaleX: 0.022, scaleY: 0.032, rotation: 0, visible: true, variant: 'line-01' }
     }
   },
   mouth: {
     label: 'MOUTH',
     children: {
-      main: { label: 'MAIN', x: 0, y: -0.105, scaleX: 0.10, scaleY: 0.04, rotation: 0, visible: true, variant: 'neutral-01' }
+      main: { label: 'MAIN', x: 0, y: -0.105, scaleX: 0.045, scaleY: 0.016, rotation: 0, visible: true, variant: 'neutral-01' }
     }
   }
 };
 
-function copyDefs() {
-  return JSON.parse(JSON.stringify(FEATURE_DEFS));
-}
+function copyDefs() { return JSON.parse(JSON.stringify(FEATURE_DEFS)); }
 
 function makeDecalTexture(feature, child) {
   const canvas = document.createElement('canvas');
@@ -39,29 +37,13 @@ function makeDecalTexture(feature, child) {
   ctx.lineJoin = 'round';
 
   if (feature === 'eyes') {
-    ctx.beginPath();
-    ctx.moveTo(28, 72);
-    ctx.quadraticCurveTo(128, 22, 228, 72);
-    ctx.quadraticCurveTo(128, 112, 28, 72);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(128, 70, 22, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = '#fff';
-    ctx.beginPath();
-    ctx.arc(136, 62, 6, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.beginPath(); ctx.moveTo(28, 72); ctx.quadraticCurveTo(128, 22, 228, 72); ctx.quadraticCurveTo(128, 112, 28, 72); ctx.stroke();
+    ctx.beginPath(); ctx.arc(128, 70, 22, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(136, 62, 6, 0, Math.PI * 2); ctx.fill();
   } else if (feature === 'nose') {
-    ctx.beginPath();
-    ctx.moveTo(118, 22);
-    ctx.quadraticCurveTo(105, 72, 88, 93);
-    ctx.quadraticCurveTo(118, 106, 152, 91);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(118, 22); ctx.quadraticCurveTo(105, 72, 88, 93); ctx.quadraticCurveTo(118, 106, 152, 91); ctx.stroke();
   } else if (feature === 'mouth') {
-    ctx.beginPath();
-    ctx.moveTo(34, 64);
-    ctx.quadraticCurveTo(128, 93, 222, 64);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(34, 64); ctx.quadraticCurveTo(128, 93, 222, 64); ctx.stroke();
   }
 
   const texture = new THREE.CanvasTexture(canvas);
@@ -118,23 +100,13 @@ export class DecalSystem {
 
   rebuild() {
     this.meshes.forEach((mesh) => {
-      mesh.material.map?.dispose?.();
-      mesh.material.dispose?.();
-      mesh.geometry.dispose?.();
-      mesh.parent?.remove(mesh);
+      mesh.material.map?.dispose?.(); mesh.material.dispose?.(); mesh.geometry.dispose?.(); mesh.parent?.remove(mesh);
     });
     this.meshes.clear();
-
     for (const [featureKey, feature] of Object.entries(this.definition)) {
       for (const childKey of Object.keys(feature.children)) {
         const geometry = new THREE.PlaneGeometry(1, 1);
-        const material = new THREE.MeshBasicMaterial({
-          map: makeDecalTexture(featureKey, childKey),
-          transparent: true,
-          depthWrite: false,
-          side: THREE.DoubleSide,
-          toneMapped: false
-        });
+        const material = new THREE.MeshBasicMaterial({ map: makeDecalTexture(featureKey, childKey), transparent: true, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
         const mesh = new THREE.Mesh(geometry, material);
         mesh.name = `decal:${featureKey}:${childKey}`;
         mesh.renderOrder = 50;
@@ -151,11 +123,7 @@ export class DecalSystem {
       this.refreshChildOptions();
       this.syncUI();
     });
-    this.childSelect.addEventListener('change', () => {
-      this.activeChild = this.childSelect.value;
-      this.syncUI();
-    });
-
+    this.childSelect.addEventListener('change', () => { this.activeChild = this.childSelect.value; this.syncUI(); });
     for (const [key, input] of Object.entries(this.controls)) {
       const event = input.type === 'checkbox' || input.tagName === 'SELECT' ? 'change' : 'input';
       input.addEventListener(event, () => {
@@ -171,15 +139,11 @@ export class DecalSystem {
 
   refreshChildOptions() {
     const children = this.definition[this.activeFeature].children;
-    this.childSelect.innerHTML = Object.entries(children)
-      .map(([key, value]) => `<option value="${key}">${value.label}</option>`)
-      .join('');
+    this.childSelect.innerHTML = Object.entries(children).map(([key, value]) => `<option value="${key}">${value.label}</option>`).join('');
     this.childSelect.value = this.activeChild;
   }
 
-  current() {
-    return this.definition[this.activeFeature]?.children?.[this.activeChild] || null;
-  }
+  current() { return this.definition[this.activeFeature]?.children?.[this.activeChild] || null; }
 
   syncUI() {
     const decal = this.current();
@@ -199,15 +163,14 @@ export class DecalSystem {
     const mesh = this.meshes.get(`${featureKey}:${childKey}`);
     if (!mesh || !decal) return;
 
-    const sideBias = featureKey === 'eyes' ? 1 : 0.65;
     mesh.position.set(
-      this.faceAnchor.x + decal.x * this.faceAnchor.width * 4.0,
-      this.faceAnchor.y + decal.y * this.faceAnchor.height * 5.5,
+      this.faceAnchor.x + decal.x * this.faceAnchor.width * 3.0,
+      this.faceAnchor.y + decal.y * this.faceAnchor.height * 4.0,
       this.faceAnchor.z
     );
     mesh.scale.set(
-      Math.max(0.002, decal.scaleX * this.faceAnchor.width * 7.0 * sideBias),
-      Math.max(0.002, decal.scaleY * this.faceAnchor.height * 7.0),
+      Math.max(0.001, decal.scaleX * this.faceAnchor.width * 3.25),
+      Math.max(0.001, decal.scaleY * this.faceAnchor.height * 3.25),
       1
     );
     mesh.rotation.z = THREE.MathUtils.degToRad(decal.rotation);
@@ -220,7 +183,5 @@ export class DecalSystem {
     }
   }
 
-  toJSON() {
-    return JSON.parse(JSON.stringify(this.definition));
-  }
+  toJSON() { return JSON.parse(JSON.stringify(this.definition)); }
 }
