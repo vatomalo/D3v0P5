@@ -24,9 +24,13 @@ body { font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; c
 .ink.br { right: -2%; bottom: -2%; width: 22%; height: 13%; clip-path: polygon(42% 25%,100% 0,100% 100%,0 100%,65% 74%,18% 70%,74% 57%,31% 49%); }
 .topbar { position: absolute; left: 0; right: 0; top: 0; height: 44px; display: flex; align-items: center; padding: 0 14px; background: #050505; border-bottom: 2px solid #111; font-style: italic; letter-spacing: .5px; text-transform: uppercase; font-size: clamp(15px,1.8vw,24px); }
 .panel { position: absolute; left: var(--hud-gap); width: 310px; background: rgba(0,0,0,.96); border: 2px solid #eee; box-shadow: 6px 6px 0 rgba(0,0,0,.28); padding: 34px 18px 16px; transform: scale(var(--hud-scale)) skew(-1deg); transform-origin: top left; }
-#settings { top: 88px; }
+#settings { top: 88px; transition: transform .28s cubic-bezier(.2,.8,.2,1); }
+#settings .panel-body { opacity: 1; transition: opacity .12s ease; }
+#settings.collapsed .panel-body { opacity: 0; pointer-events: none; }
 #controls { top: 535px; padding-top: 32px; }
-.panel-title { position: absolute; left: -2px; top: -22px; padding: 7px 15px 8px; background: var(--red); color: #070707; border: 2px solid #111; font-size: 22px; font-style: italic; transform: skew(-8deg) rotate(-1deg); text-transform: uppercase; }
+.panel-title { position: absolute; left: -2px; top: -22px; padding: 7px 15px 8px; background: var(--red); color: #070707; border: 2px solid #111; font-size: 22px; font-style: italic; transform: skew(-8deg) rotate(-1deg); text-transform: uppercase; white-space: nowrap; }
+.panel-toggle { font-family: inherit; cursor: pointer; }
+.panel-toggle .toggle-mark { display: inline-block; margin-left: 7px; font-size: .72em; }
 .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; margin: 9px 0; font-size: 18px; font-style: italic; letter-spacing: .4px; }
 .switch { appearance: none; width: 42px; height: 22px; border: 2px solid #eee; border-radius: 20px; background: #333; position: relative; cursor: pointer; }
 .switch:checked { background: var(--red); }.switch::before { content: ''; position: absolute; width: 14px; height: 14px; border-radius: 50%; background: white; top: 2px; left: 3px; transition: .15s; }.switch:checked::before { left: 21px; }
@@ -48,21 +52,19 @@ input[type='range'] { width: 120px; accent-color: var(--red); } select { backgro
 #app[data-ui-profile='tablet'] #controls { top: 470px; }
 #app[data-ui-profile='tablet'] .jp-card { right: 14px; width: 104px; min-height: 330px; font-size: 22px; padding: 16px 13px; }
 
-/* Phones keep the original floating-panel composition, just scaled to fit. */
 #app[data-ui-profile='phone-landscape'] { --hud-scale: .62; --hud-gap: 8px; }
 #app[data-ui-profile='phone-landscape'] .topbar { height: 30px; font-size: 14px; }
 #app[data-ui-profile='phone-landscape'] #settings { top: 52px; }
-#app[data-ui-profile='phone-landscape'] #controls,
-#app[data-ui-profile='phone-landscape'] .jp-card,
-#app[data-ui-profile='phone-landscape'] .version { display:none; }
+#app[data-ui-profile='phone-landscape'] #settings.collapsed { transform: translateX(-286px) scale(var(--hud-scale)) skew(-1deg); }
+#app[data-ui-profile='phone-landscape'] #controls,#app[data-ui-profile='phone-landscape'] .jp-card,#app[data-ui-profile='phone-landscape'] .version { display:none; }
 #app[data-ui-profile='phone-landscape'] .logo { top:42px; }
 
 #app[data-ui-profile='phone-portrait'] { --hud-scale: .68; --hud-gap: 8px; }
 #app[data-ui-profile='phone-portrait'] .topbar { height:34px; font-size:13px; padding: 0 10px; }
 #app[data-ui-profile='phone-portrait'] #settings { left: 8px; top: 58px; bottom: auto; width: 310px; max-height: none; overflow: visible; transform: scale(var(--hud-scale)) skew(-1deg); transform-origin: top left; }
-#app[data-ui-profile='phone-portrait'] #controls,
-#app[data-ui-profile='phone-portrait'] .jp-card,
-#app[data-ui-profile='phone-portrait'] .version { display:none; }
+#app[data-ui-profile='phone-portrait'] #settings.collapsed { transform: translateX(-286px) scale(var(--hud-scale)) skew(-1deg); }
+#app[data-ui-profile='phone-portrait'] #settings.collapsed .panel-title { left: 286px; }
+#app[data-ui-profile='phone-portrait'] #controls,#app[data-ui-profile='phone-portrait'] .jp-card,#app[data-ui-profile='phone-portrait'] .version { display:none; }
 #app[data-ui-profile='phone-portrait'] .logo { left:50%; top:46px; bottom:auto; transform: translateX(-50%) scale(var(--hud-scale)) rotate(-4deg); transform-origin: top center; }
 #app[data-ui-profile='phone-portrait'] .logo-main { font-size:32px; }
 #app[data-ui-profile='phone-portrait'] .logo-main b { margin-left:72px; }
