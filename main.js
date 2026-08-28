@@ -2,7 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.m
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/loaders/GLTFLoader.js';
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
-import { DecalSystem } from './decals.js';
+import { DecalSystem } from './decals.js?v=20260828-0205';
 
 const app = document.querySelector('#app');
 const canvas = document.querySelector('#game');
