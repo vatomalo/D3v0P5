@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Garden Gaiden Engine - Character Lab</title>
-  <link rel="stylesheet" href="./style.css?v=20260828-0205" />
+  <link rel="stylesheet" href="./style.css?v=20260829-0230" />
   <script type="importmap">
   {
     "imports": {
@@ -19,15 +19,14 @@
     <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
     <canvas id="game"></canvas>
     <div class="ink tl"></div><div class="ink tr"></div><div class="ink bl"></div><div class="ink br"></div>
-
     <div id="ui-stage">
       <header class="topbar">GARDEN GAIDEN ENGINE - CHARACTER LAB</header>
-
       <section id="settings" class="panel">
         <button id="settings-toggle" class="panel-title panel-toggle" type="button" aria-expanded="true" aria-controls="settings">CHARACTER VIEW <span class="toggle-mark">◀</span></button>
         <div class="panel-body">
           <label class="load-model">LOAD MODEL<input id="model-file" type="file" accept=".glb,model/gltf-binary" hidden></label>
           <div id="model-name" class="model-name">NO MODEL LOADED</div>
+          <div class="camera-presets" aria-label="Camera presets"><button type="button" data-camera="body">FULL BODY</button><button type="button" data-camera="torso">TORSO</button><button type="button" data-camera="face">FACE</button></div>
           <label class="row"><span>CEL SHADING</span><input id="cel" class="switch" type="checkbox" checked></label>
           <label class="row"><span>OUTLINE</span><input id="outline" class="switch" type="checkbox" checked></label>
           <label class="row"><span>SMOOTH MODEL</span><input id="smooth-model" class="switch" type="checkbox" checked></label>
@@ -40,7 +39,6 @@
           <label class="row"><span>RIM LIGHT</span><input id="rim" class="switch" type="checkbox" checked></label>
         </div>
       </section>
-
       <section id="decals" class="panel decal-panel">
         <div class="panel-title">DECALS</div>
         <div class="decal-path"><select id="decal-feature"><option value="eyes">EYES</option><option value="nose">NOSE</option><option value="mouth">MOUTH</option></select><span>›</span><select id="decal-child"></select></div>
@@ -51,24 +49,17 @@
         <label class="row"><span>HEIGHT</span><input id="decal-scale-y" type="range" min="0.005" max="0.08" step="0.0025" value="0.025"></label>
         <label class="row"><span>ROTATION</span><input id="decal-rotation" type="range" min="-45" max="45" step="1" value="0"></label>
         <label class="row"><span>VARIANT</span><select id="decal-variant"><option value="anime-01">ANIME 01</option><option value="line-01">LINE 01</option><option value="neutral-01">NEUTRAL 01</option></select></label>
-        <div class="decal-note">FEATURE → SUB-DECAL</div>
+        <div class="decal-note">FEATURE → SUB-DECAL · COMPOSITED OVERLAY</div>
       </section>
-
       <section id="controls" class="panel">
         <div class="panel-title">CONTROLS</div>
-        <div class="control-line"><span>DRAG</span><span>:</span><span>ROTATE</span></div>
-        <div class="control-line"><span>RIGHT DRAG</span><span>:</span><span>PAN</span></div>
-        <div class="control-line"><span>SCROLL</span><span>:</span><span>ZOOM</span></div>
-        <div class="control-line"><span>R</span><span>:</span><span>RESET CAMERA</span></div>
-        <div class="control-line"><span>H</span><span>:</span><span>TOGGLE UI</span></div>
+        <div class="control-line"><span>DRAG</span><span>:</span><span>ROTATE</span></div><div class="control-line"><span>RIGHT DRAG</span><span>:</span><span>PAN</span></div><div class="control-line"><span>SCROLL</span><span>:</span><span>ZOOM</span></div><div class="control-line"><span>R</span><span>:</span><span>RESET CAMERA</span></div><div class="control-line"><span>F</span><span>:</span><span>FACE CAMERA</span></div><div class="control-line"><span>H</span><span>:</span><span>TOGGLE UI</span></div>
       </section>
-
       <aside class="jp-card">キャラクターはここから始まる。</aside>
       <div class="logo" aria-label="Garden Gaiden logo"><div class="logo-main">GARDEN <b>GAIDEN</b></div><div class="logo-sub">CHARACTER LAB</div></div>
-      <div class="version">CHARACTER LAB<strong>0.2</strong></div>
-      <div id="status">LOAD A GLB TO BEGIN</div>
+      <div class="version">CHARACTER LAB<strong>0.3</strong></div><div id="status">LOAD A GLB TO BEGIN</div>
     </div>
   </main>
-  <script type="module" src="./main.js?v=20260828-0205"></script>
+  <script type="module" src="./main.js?v=20260829-0230"></script>
 </body>
 </html>
