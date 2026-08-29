@@ -24,9 +24,13 @@
       <section id="settings" class="panel">
         <button id="settings-toggle" class="panel-title panel-toggle" type="button" aria-expanded="true" aria-controls="settings">CHARACTER VIEW <span class="toggle-mark">◀</span></button>
         <div class="panel-body">
-          <label class="load-model">LOAD MODEL<input id="model-file" type="file" accept=".glb,model/gltf-binary" hidden></label>
+          <label class="load-model">LOAD MODEL<input id="model-file" type="file" accept=".glb,.fbx,model/gltf-binary" hidden></label>
           <div id="model-name" class="model-name">NO MODEL LOADED</div>
+          <label class="row"><span>RIGGED BASE</span><select id="base-model"><option value="male">MALE</option><option value="female">FEMALE</option></select></label>
           <div class="camera-presets" aria-label="Camera presets"><button type="button" data-camera="body">FULL BODY</button><button type="button" data-camera="torso">TORSO</button><button type="button" data-camera="face">FACE</button></div>
+          <div class="panel-title">ANIMATION TEST</div>
+          <div class="camera-presets"><button id="test-stance" type="button">BOXING STANCE</button><button id="anim-pause" type="button">PAUSE</button><button id="anim-stop" type="button">STOP</button></div>
+          <div id="anim-info" class="model-name">NO ANIMATION</div>
           <label class="row"><span>CEL SHADING</span><input id="cel" class="switch" type="checkbox" checked></label>
           <label class="row"><span>OUTLINE</span><input id="outline" class="switch" type="checkbox" checked></label>
           <label class="row"><span>SMOOTH MODEL</span><input id="smooth-model" class="switch" type="checkbox" checked></label>
@@ -57,9 +61,9 @@
       </section>
       <aside class="jp-card">キャラクターはここから始まる。</aside>
       <div class="logo" aria-label="Garden Gaiden logo"><div class="logo-main">GARDEN <b>GAIDEN</b></div><div class="logo-sub">CHARACTER LAB</div></div>
-      <div class="version">CHARACTER LAB<strong>0.3</strong></div><div id="status">LOAD A GLB TO BEGIN</div>
+      <div class="version">CHARACTER LAB<strong>0.4</strong></div><div id="status">LOADING RIGGED BASE...</div>
     </div>
   </main>
-  <script type="module" src="./main.js?v=20260829-0242"></script>
+  <script type="module" src="./main.js?v=20260829-0311"></script>
 </body>
 </html>
