@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Garden Gaiden Engine - Character Lab</title>
-  <link rel="stylesheet" href="./style.css?v=20260830-2326" />
+  <link rel="stylesheet" href="./style.css?v=20260830-2331" />
   <script type="importmap">
   {
     "imports": {
@@ -22,26 +22,38 @@
     <div id="ui-stage">
       <header class="topbar">GARDEN GAIDEN ENGINE - CHARACTER LAB</header>
 
-      <section id="settings" class="panel compact-panel">
+      <section id="settings" class="panel character-workspace">
         <button id="settings-toggle" class="panel-title panel-toggle" type="button" aria-expanded="true" aria-controls="settings">CHARACTER VIEW <span class="toggle-mark">◀</span></button>
         <div class="panel-body">
           <label class="load-model">LOAD MODEL<input id="model-file" type="file" accept=".glb,.fbx,model/gltf-binary" hidden></label>
           <div id="model-name" class="model-name">NO MODEL LOADED</div>
           <label class="row"><span>RIGGED BASE</span><select id="base-model"><option value="male">MALE</option><option value="female">FEMALE</option></select></label>
           <div class="camera-presets" aria-label="Camera presets"><button type="button" data-camera="body">FULL BODY</button><button type="button" data-camera="torso">TORSO</button><button type="button" data-camera="face">FACE</button></div>
+
+          <div class="workspace-separator"></div>
+          <div class="subsection-title">ANIMATION TEST</div>
+          <div class="camera-presets"><button id="test-stance" type="button">BOXING STANCE</button><label class="load-model mini-load"><span>LOAD ANIM</span><input id="animation-file" type="file" accept=".fbx" hidden></label><button id="anim-replay" type="button">REPLAY</button></div>
+          <div class="camera-presets"><button id="anim-pause" type="button">PAUSE</button><button id="anim-stop" type="button">STOP</button><button id="anim-ground" type="button">GROUND</button></div>
+          <label class="row"><span>STABILIZER</span><input id="anim-stabilizer" class="switch" type="checkbox" checked></label>
+          <label class="row"><span>ROOT MOTION</span><select id="root-motion"><option value="rebase" selected>REBASE</option><option value="lock">LOCK</option><option value="raw">RAW</option></select></label>
+          <label class="row"><span>AXIS FIX</span><select id="axis-fix"><option value="auto" selected>AUTO</option><option value="0">0°</option><option value="90">+90° X</option><option value="-90">-90° X</option><option value="180">180° X</option></select></label>
+          <div class="camera-presets one-button"><button id="anim-diagnose" type="button">DIAGNOSE RIG</button></div>
+          <div id="rig-info" class="model-name">RIG: --</div>
+          <div id="anim-info" class="model-name">NO ANIMATION</div>
         </div>
       </section>
 
-      <section id="animation-lab" class="panel">
-        <div class="panel-title">ANIMATION TEST</div>
-        <div class="camera-presets"><button id="test-stance" type="button">BOXING STANCE</button><label class="load-model mini-load"><span>LOAD ANIM</span><input id="animation-file" type="file" accept=".fbx" hidden></label><button id="anim-replay" type="button">REPLAY</button></div>
-        <div class="camera-presets"><button id="anim-pause" type="button">PAUSE</button><button id="anim-stop" type="button">STOP</button><button id="anim-ground" type="button">GROUND</button></div>
-        <label class="row"><span>STABILIZER</span><input id="anim-stabilizer" class="switch" type="checkbox" checked></label>
-        <label class="row"><span>ROOT MOTION</span><select id="root-motion"><option value="rebase" selected>REBASE</option><option value="lock">LOCK</option><option value="raw">RAW</option></select></label>
-        <label class="row"><span>AXIS FIX</span><select id="axis-fix"><option value="auto" selected>AUTO</option><option value="0">0°</option><option value="90">+90° X</option><option value="-90">-90° X</option><option value="180">180° X</option></select></label>
-        <div class="camera-presets one-button"><button id="anim-diagnose" type="button">DIAGNOSE RIG</button></div>
-        <div id="rig-info" class="model-name">RIG: --</div>
-        <div id="anim-info" class="model-name">NO ANIMATION</div>
+      <section id="decals" class="panel decal-panel">
+        <div class="panel-title">DECALS</div>
+        <div class="decal-path"><select id="decal-feature"><option value="eyes">EYES</option><option value="nose">NOSE</option><option value="mouth">MOUTH</option></select><span>›</span><select id="decal-child"></select></div>
+        <label class="row"><span>VISIBLE</span><input id="decal-visible" class="switch" type="checkbox" checked></label>
+        <label class="row"><span>X</span><input id="decal-x" type="range" min="-0.3" max="0.3" step="0.0025" value="0"></label>
+        <label class="row"><span>Y</span><input id="decal-y" type="range" min="-0.3" max="0.3" step="0.0025" value="0"></label>
+        <label class="row"><span>WIDTH</span><input id="decal-scale-x" type="range" min="0.005" max="0.12" step="0.0025" value="0.05"></label>
+        <label class="row"><span>HEIGHT</span><input id="decal-scale-y" type="range" min="0.005" max="0.08" step="0.0025" value="0.025"></label>
+        <label class="row"><span>ROTATION</span><input id="decal-rotation" type="range" min="-45" max="45" step="1" value="0"></label>
+        <label class="row"><span>VARIANT</span><select id="decal-variant"><option value="anime-01">ANIME 01</option><option value="line-01">LINE 01</option><option value="neutral-01">NEUTRAL 01</option></select></label>
+        <div class="decal-note">FEATURE → SUB-DECAL · COMPOSITED OVERLAY</div>
       </section>
 
       <section id="render-settings" class="panel">
@@ -58,27 +70,18 @@
         <label class="row"><span>RIM LIGHT</span><input id="rim" class="switch" type="checkbox" checked></label>
       </section>
 
-      <section id="decals" class="panel decal-panel">
-        <div class="panel-title">DECALS</div>
-        <div class="decal-path"><select id="decal-feature"><option value="eyes">EYES</option><option value="nose">NOSE</option><option value="mouth">MOUTH</option></select><span>›</span><select id="decal-child"></select></div>
-        <label class="row"><span>VISIBLE</span><input id="decal-visible" class="switch" type="checkbox" checked></label>
-        <label class="row"><span>X</span><input id="decal-x" type="range" min="-0.3" max="0.3" step="0.0025" value="0"></label>
-        <label class="row"><span>Y</span><input id="decal-y" type="range" min="-0.3" max="0.3" step="0.0025" value="0"></label>
-        <label class="row"><span>WIDTH</span><input id="decal-scale-x" type="range" min="0.005" max="0.12" step="0.0025" value="0.05"></label>
-        <label class="row"><span>HEIGHT</span><input id="decal-scale-y" type="range" min="0.005" max="0.08" step="0.0025" value="0.025"></label>
-        <label class="row"><span>ROTATION</span><input id="decal-rotation" type="range" min="-45" max="45" step="1" value="0"></label>
-        <label class="row"><span>VARIANT</span><select id="decal-variant"><option value="anime-01">ANIME 01</option><option value="line-01">LINE 01</option><option value="neutral-01">NEUTRAL 01</option></select></label>
-        <div class="decal-note">FEATURE → SUB-DECAL · COMPOSITED OVERLAY</div>
-      </section>
-
-      <section id="controls" class="panel">
-        <div class="panel-title">CONTROLS</div>
-        <div class="control-line"><span>DRAG</span><span>:</span><span>ROTATE</span></div><div class="control-line"><span>RIGHT DRAG</span><span>:</span><span>PAN</span></div><div class="control-line"><span>SCROLL</span><span>:</span><span>ZOOM</span></div><div class="control-line"><span>R</span><span>:</span><span>RESET CAMERA</span></div><div class="control-line"><span>F</span><span>:</span><span>FACE CAMERA</span></div><div class="control-line"><span>H</span><span>:</span><span>TOGGLE UI</span></div>
+      <section id="controls" class="controls-strip" aria-label="Controls">
+        <div class="control-chip"><b>DRAG</b><span>ROTATE</span></div>
+        <div class="control-chip"><b>RIGHT DRAG</b><span>PAN</span></div>
+        <div class="control-chip"><b>SCROLL</b><span>ZOOM</span></div>
+        <div class="control-chip"><b>R</b><span>RESET</span></div>
+        <div class="control-chip"><b>F</b><span>FACE</span></div>
+        <div class="control-chip"><b>H</b><span>UI</span></div>
       </section>
 
       <aside class="jp-card">キャラクターはここから始まる。</aside>
       <div class="logo" aria-label="Garden Gaiden logo"><div class="logo-main">GARDEN <b>GAIDEN</b></div><div class="logo-sub">CHARACTER LAB</div></div>
-      <div class="version">CHARACTER LAB<strong>0.5.2</strong></div><div id="status">LOADING RIGGED BASE...</div>
+      <div class="version">CHARACTER LAB<strong>0.5.3</strong></div><div id="status">LOADING RIGGED BASE...</div>
     </div>
   </main>
   <script type="module" src="./fbx-runtime-material.js?v=20260830-2319"></script>
