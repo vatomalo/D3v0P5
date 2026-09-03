@@ -1,3 +1,4 @@
+import './hair-axis-fix.js?v=20260903-axis1';
 import * as THREE from 'three';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
