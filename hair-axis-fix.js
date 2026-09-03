@@ -19,14 +19,14 @@ function align(){
         1/Math.max(Math.abs(worldScale.z),1e-5)
       );
       const charH=new THREE.Box3().setFromObject(character).getSize(new THREE.Vector3()).y;
-      const offsetWorld=new THREE.Vector3(0,charH*.105,0);
+      const offsetWorld=new THREE.Vector3(0,charH*.074,0);
       const offsetLocal=offsetWorld.applyQuaternion(qHead.clone().invert());
       offsetLocal.x/=Math.max(Math.abs(worldScale.x),1e-5);offsetLocal.y/=Math.max(Math.abs(worldScale.y),1e-5);offsetLocal.z/=Math.max(Math.abs(worldScale.z),1e-5);
       modular.position.copy(offsetLocal);
-      if(modular!==last){console.info('[GG HAIR AXIS] Hair raised to crown',{worldScale:worldScale.toArray(),localScale:modular.scale.toArray(),position:modular.position.toArray()});last=modular}
+      if(modular!==last){console.info('[GG HAIR AXIS] Hair lowered to skull',{worldScale:worldScale.toArray(),localScale:modular.scale.toArray(),position:modular.position.toArray()});last=modular}
     }
   }
   requestAnimationFrame(align);
 }
 requestAnimationFrame(align);
-console.info('[GG HAIR AXIS] Character-aligned + crown-positioned hair frame armed.');
+console.info('[GG HAIR AXIS] Character-aligned + lower crown hair frame armed.');
