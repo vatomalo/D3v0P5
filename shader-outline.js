@@ -1,4 +1,3 @@
-import './hair-lab.js?v=20260903-hair4';
 import * as THREE from 'three';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
