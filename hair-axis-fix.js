@@ -28,10 +28,10 @@ function align(){
       head.getWorldQuaternion(qHead);character.getWorldQuaternion(qCharacter);head.getWorldScale(worldScale);
       const qAlign=qHead.clone().invert().multiply(qCharacter);
       const charH=new THREE.Box3().setFromObject(character).getSize(new THREE.Vector3()).y;
-      const offset=new THREE.Vector3(0,charH*.022,0).applyQuaternion(qHead.clone().invert());
-      offset.x/=Math.max(Math.abs(worldScale.x),1e-5);offset.y/=Math.max(Math.abs(worldScale.y),1e-5);offset.z/=Math.max(Math.abs(worldScale.z),1e-5);
-      alignCarrier(lab?.modular,head,character,qAlign,worldScale,offset);
-      alignCarrier(lab?.hair,head,character,qAlign,worldScale,offset);
+      const makeOffset=height=>{const offset=new THREE.Vector3(0,charH*height,0).applyQuaternion(qHead.clone().invert());offset.x/=Math.max(Math.abs(worldScale.x),1e-5);offset.y/=Math.max(Math.abs(worldScale.y),1e-5);offset.z/=Math.max(Math.abs(worldScale.z),1e-5);return offset};
+      // Imported mesh sits at the skull centre; procedural roots need the crown frame.
+      alignCarrier(lab?.modular,head,character,qAlign,worldScale,makeOffset(.070));
+      alignCarrier(lab?.hair,head,character,qAlign,worldScale,makeOffset(.022));
     }
   }
   requestAnimationFrame(align);
