@@ -3,7 +3,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 
 // Sprite descriptors keep today's procedural decals compatible with a future atlas texture.
 const SPRITE_LIBRARY={eyes:['eye-lid','eye-neutral','eye-happy','eye-angry','eye-worried','eye-blink','eye-surprised','eye-sleepy','eye-fierce'],nose:['nose-soft','nose-line','nose-button','nose-stern'],mouth:['mouth-neutral','mouth-smile','mouth-sour','mouth-angry','mouth-open']};
-const FEATURE_DEFS={eyes:{label:'EYES',children:{left:{label:'LEFT',x:-.185,y:.105,scaleX:.064,scaleY:.052,rotation:-2,visible:true,variant:'eye-neutral',mirror:false},right:{label:'RIGHT',x:.185,y:.105,scaleX:.064,scaleY:.052,rotation:2,visible:true,variant:'eye-neutral',mirror:true}}},nose:{label:'NOSE',children:{main:{label:'MAIN',x:0,y:-.045,scaleX:.065,scaleY:.104,rotation:0,visible:true,variant:'nose-line'}}},mouth:{label:'MOUTH',children:{main:{label:'MAIN',x:0,y:-.215,scaleX:.142,scaleY:.068,rotation:0,visible:true,variant:'mouth-neutral'}}}};
+const FEATURE_DEFS={eyes:{label:'EYES',children:{left:{label:'LEFT',x:-.185,y:.105,scaleX:.090,scaleY:.072,rotation:-2,visible:true,variant:'eye-neutral',mirror:false},right:{label:'RIGHT',x:.185,y:.105,scaleX:.064,scaleY:.052,rotation:2,visible:true,variant:'eye-neutral',mirror:true}}},nose:{label:'NOSE',children:{main:{label:'MAIN',x:0,y:-.045,scaleX:.065,scaleY:.104,rotation:0,visible:true,variant:'nose-line'}}},mouth:{label:'MOUTH',children:{main:{label:'MAIN',x:0,y:-.215,scaleX:.142,scaleY:.068,rotation:0,visible:true,variant:'mouth-neutral'}}}};
 const copyDefs=()=>JSON.parse(JSON.stringify(FEATURE_DEFS));let activeDecalSystem=null;
 function drawEye(ctx,v){
   ctx.strokeStyle='#171119';ctx.fillStyle='#171119';ctx.lineCap='round';ctx.lineJoin='round';
